@@ -1,5 +1,9 @@
 package com.smartass.game;
 
+import com.smartass.game.states.GameStateManager;
+import com.smartass.game.util.KeyHandler;
+import com.smartass.game.util.MouseHandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,6 +21,10 @@ public class GamePanel extends JPanel implements Runnable {
     private BufferedImage img;
     private Graphics2D g;
 
+    private MouseHandler mouse;
+    private KeyHandler key;
+
+    private GameStateManager gsm;
 
     public GamePanel(int width, int height) {
         this.width = width;
@@ -40,6 +48,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         g = (Graphics2D) img.getGraphics();
+
+        mouse = new MouseHandler();
+        key = new KeyHandler();
+
+        gsm = new GameStateManager();
     }
 
     public void run() {
@@ -65,7 +78,7 @@ public class GamePanel extends JPanel implements Runnable {
             int updateCount = 0;
             while(((now = lastUpdateTime) > TBU) && (updateCount < MUBR)) {
                 update();
-                input();
+                input(mouse, key);
                 lastUpdateTime += TBU;
                 updateCount++;
             }
@@ -74,7 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
                 lastUpdateTime = now - TBU;
             }
 
-            input();
+            input(mouse, key);
             render();
             draw();
             lastRenderTime = now;
@@ -109,10 +122,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     public void update(){
+        gsm.update();
 
     }
 
-    public void input(){
+    public void input(MouseHandler mouse, KeyHandler key){
+        gsm.input(mouse, key);
 
     }
 
@@ -120,6 +135,7 @@ public class GamePanel extends JPanel implements Runnable {
         if(g != null) {
             g.setColor(new Color(66, 134, 244 ));
             g.fillRect(0, 0, width, height);
+            gsm.render(g);
         }
 
     }
