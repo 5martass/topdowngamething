@@ -1,7 +1,10 @@
 package com.smartass.game.states;
 
+import com.smartass.game.graphics.Font;
+import com.smartass.game.graphics.Sprite;
 import com.smartass.game.util.KeyHandler;
 import com.smartass.game.util.MouseHandler;
+import com.smartass.game.util.Vector;
 
 import java.awt.*;
 
@@ -10,8 +13,11 @@ import java.awt.*;
  */
 public class PlayState extends GameState {
 
+    private Font font;
+
     public PlayState(GameStateManager gsm) {
         super(gsm);
+        font = new Font("font/font1.png", 16, 16);
     }
 
     public void update() {
@@ -20,15 +26,11 @@ public class PlayState extends GameState {
 
     public void input(MouseHandler mouse,KeyHandler key) {
 
-        if(key.up.down){
-            System.out.println("W is pressed");
-        }
 
     }
 
     public void render(Graphics2D g){
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(0, 0, 64, 64);
+        Sprite.drawArray(g, font, "BUTTHOLE", new Vector(100, 100),32, 32, 16, 0);
 
     }
 
